@@ -1,0 +1,7 @@
+#!/bin/bash
+DISK=Adisk
+OBS_DATE=1804
+SUBDIR=20180426T013256Z_aro_vdif
+LENI=3
+LENJ=4
+sbatch --job-name=HTAR_${SUBDIR} --output=HTAR_${SUBDIR}.OUT --export=DISK=${DISK},OBS_DATE=${OBS_DATE},SUBDIR=${SUBDIR},LENI=$LENI,LENJ=$LENJ htar_slurm_ARO.sh
