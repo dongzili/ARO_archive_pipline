@@ -1,11 +1,11 @@
 # ARO_archive_pipline
 Pipline to sync data from groundhog to niagara, and then archive them into HPSS.
 
-NOTE:
+### NOTE:
 * It will group per 1000 files(~65G) into a tarball for optimal archiving speed. 
-* No checksum is included, but the scripts will compare the file number in groundhog, niagara and HPSS tarball. If the number does not match, the script will automatically repeat its previous procedure.
+* No checksum is included, but the scripts will compare the file number in groundhog, niagara and HPSS tarball. If the number does not match, the script will automatically repeat the previous step.
 
-SETUP(only do it once):
+### SETUP(only do it once):
 1. create a ~/.popt file and put the following line in it:
 rsync alias -s -vrtlD -e "ssh"    
 2. make sure you can type "ssh groundhog" in niagara and login into groundhog without passwords
@@ -15,7 +15,7 @@ rsync alias -s -vrtlD -e "ssh"
 #cat .ssh/id_rsa.pub | ssh groundhog 'cat >> .ssh/authorized_keys'
 #please google it for detailed steps
 
-USAGE:
+### USAGE:
 1. put the folder: file4groundhog in groundhog, change the 'drivename' in check_file_info.py, run it with python3. 
    Copy the output file "$drivename_file_info.dat' back to this folder.
 2. revise the following lines in makefile:
@@ -40,6 +40,6 @@ USAGE:
    * **make checkhtar**: check the file number in HPSS tarballs
 #whether there are missing files, see htar_submit/CHECK*.OUT
 
-MORE HELP:
-* **make help**: will print the help 
+### MORE HELP:
+* make help: will print the help 
 * python rsync_ARO.py -h (with python3) will print the parameter for the syncing script.
