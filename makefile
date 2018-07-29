@@ -1,13 +1,14 @@
 SHELL:=/bin/bash
-DISK=A#drive name
-OBS_DATE=1804#observed at 2018.4
+DISK=B#drive name
+OBS_DATE=1707#observed at 2018.4
 STARTFILE=0
-ENDFILE=9
+ENDFILE=-1
 #archiving folders between $STARTFILE and $ENDFILE(included) in $drivename_file_info.dat
 NIADIR=${SCRATCH}/ARO/${OBS_DATE}/${DISK}disk/
 ARCDIR=${ARCHIVE}/ARO/${OBS_DATE}/${DISK}disk/
 #path in niagara and archive directory
 #here the ${ARCHIVE} parameter is empty, it is imported in submit script.
+NUMDRIVES=9
 
 .PHONY: help
 help:
@@ -22,12 +23,13 @@ help:
 
 #to see help: python rsync_ARO.py -h
 sync:func_sync.py func_check.py rsync_ARO.py
+	#ssh nia-datamover1
 	module load intelpython3/2018.2;\
-	nohup python rsync_ARO.py ${DISK}_file_info.dat -o ${NIADIR} -s ${STARTFILE} -e ${ENDFILE} --syncNotes --syncData --mkdir > log_sync 2>&1 &
+	nohup python rsync_ARO.py ${DISK}_file_info.dat -d ${NUMDRIVES} -o ${NIADIR} -s ${STARTFILE} -e ${ENDFILE} --syncNotes --syncData --mkdir > log_sync 2>&1 &
 
 sync2:func_sync.py func_check.py rsync_ARO.py
 	module load intelpython3/2018.2;\
-	nohup python rsync_ARO.py ${DISK}_file_info.dat -o ${NIADIR} -s ${STARTFILE} -e ${ENDFILE} --syncNotes --syncData > log_sync 2>&1 &
+	nohup python rsync_ARO.py ${DISK}_file_info.dat -d ${NUMDRIVES} -o ${NIADIR} -s ${STARTFILE} -e ${ENDFILE} --syncNotes --syncData > log_sync 2>&1 &
 
 checksync:rsync_ARO.py func_check.py
 	module load intelpython3/2018.2;\

@@ -2,12 +2,15 @@
 import numpy as np
 import os
 import time
-from func_check import disk_info
+from func_check import *
 
 drivename='A'
 num_drives=10
-dest = '/scratch/p/pen/fleaf5/ARO/{}/'.format(drivename)
+outpath='/home/dzli/trans/'
+fileInfoName=outpath+drivename+'_file_info.dat'
+wikiDocName=outpath+drivename+'_wiki_doc.dat'
 drives = ['/mnt/{}-{}/'.format(drivename,no) for no in range(0,num_drives)]
 #check subdirs:
-subdirs,leni,lenj,size_files=disk_info(drives,outname='/home/dzli/trans/'+drivename+'_file_info')
+subdirs,leni,lenj,size_files=disk_info(drives,outname=fileInfoName)
+NULL=write4wiki(drives[0],fileInfoName,outname=wikiDocName)
 

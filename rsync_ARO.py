@@ -44,9 +44,10 @@ def main():
     else:
         endDir=args.endDir
     startDir=args.startDir; numDir=endDir-startDir+1
+    print(numDir)
 
     if args.mkdir==True:
-        null=create_files(subdirs,leni,lenj,startDir=startDir,numDir=numDir)
+        null=create_files(destDir,subdirs,leni,lenj,startDir=startDir,numDir=numDir)
     if args.syncNotes==True:
         null=rsync_notes(destDir,src,subdirs,drives,startDir,numDir)
     if args.syncData==True:

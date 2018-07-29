@@ -65,18 +65,3 @@ def check_rsync(path,subdirs,leni,lenj,numFilesPreSync,startDir,numDir):
     return check
 
 
-def create_files(subdirs,leni,lenj,startDir=0,numDir=0):
-    for ndir in range(startDir,startDir+numDir):
-        desfolder=dest+subdirs[ndir]+'/'
-        for i in range(leni[ndir]):
-            if i == leni[ndir]-1:
-                jmax = lenj[ndir]
-            else:
-                jmax = 10
-            for j in range(0,jmax):
-                si = "%03d" % i 
-                sj = str(j)
-                p0 = subprocess.Popen(['mkdir -p '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                exit_codes = p0.wait() 
-                print(desfolder+si+'/'+si+sj+'/')
-    return 0

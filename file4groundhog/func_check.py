@@ -14,26 +14,37 @@ def disk_info(drives,outname='rsync.par',saveinfo='True'):
     numSubDir = len(subdirs)
 
     numFiles = np.zeros(len(subdirs))
-    size_files = np.zeros(len(subdirs))
+    sizeFiles = np.zeros(len(subdirs))
     leni = np.zeros(len(subdirs),dtype='int')
     lenj = np.zeros(len(subdirs),dtype='int')
     for subdir,i in zip(subdirs,np.arange(numSubDir)):
         for drive in drives:
-            os.chdir(drive+subdir)
-            numFiles[i]+=len(glob.glob('*.vdif'))
-            size_files[i]+=(sum(os.path.getsize(f) for f in os.listdir('.') if os.path.isfile(f))/1024.**3) #filesize in Gb
-
-        leni[i] = np.int(np.ceil(numFiles[i]/10000.))
-        lenj[i] = np.int(np.ceil((numFiles[i]%10000)/1000.))
+            try:
+                os.chdir(drive+subdir)
+                numFiles[i]+=len(glob.glob('*.vdif'))
+                sizeFiles[i]+=(sum(os.path.getsize(f) for f in os.listdir('.') if os.path.isfile(f))/1024.**3) #filesize in Gb
+            except IOError:
+                print('corrupted files or drive:',drive+subdir)
+                
+        #to deal with corrupted file:
+        roughTotFile=np.sort(glob.glob('*.vdif'))[-1]
+        roughTotFile=int(roughTotFile[:-5])
+        if roughTotFile<numFiles[i]:
+            roughTotFile=numFiles[i]
+        else:
+            print('must have corrupted drives or missing files')
+        print(roughTotFile)
+        leni[i] = np.int(np.ceil(roughTotFile/10000.))
+        lenj[i] = np.int(np.ceil((roughTotFile%10000)/1000.))
 
     #write to current dir
     if saveinfo=='True':
         with open(outname, 'w') as out:
-            out.write('#subdirs numFiles size')
+            out.write('#subdirs numFiles size\n')
             for k in np.arange(len(subdirs)):
-                out.write(subdirs[k]+' %d %dGb %d %d'%(numFiles[k],size_files[k],leni[k],lenj[k])+'\n')
+                out.write(subdirs[k]+' %d %dGb %d %d '%(numFiles[k],sizeFiles[k],leni[k],lenj[k])+'\n')
     print('info saved to ',outname) 
-    return subdirs,leni,lenj,size_files
+    return subdirs,leni,lenj,sizeFiles
 
 
 def read_dsk_info(filename):
@@ -41,6 +52,33 @@ def read_dsk_info(filename):
     subdirs,leni,lenj=info[:,0],info[:,3].astype('int'),info[:,4].astype('int')
     numFiles,sizeFiles=info[:,1].astype('int'),info[:,2]
     return subdirs,leni,lenj,numFiles,sizeFiles
+
+def write4wiki(drive,diskInfoFile,outname='wiki_doc.dat',saveinfo='True'):
+    subdirs,leni,lenj,numFiles,sizeFiles=read_dsk_info(diskInfoFile)
+    #read notes:
+    notes=[]
+    for i in np.arange(len(subdirs)):
+        notepath=drive+subdirs[i]+'/'+'settings.txt'
+        note=np.genfromtxt(notepath,dtype=str,delimiter='\t')[11][6:-1]
+        print(note)
+        notes.append(note)
+            
+    #write to current dir
+    if saveinfo=='True':
+        with open(outname, 'w') as out:
+            out.write('==='+subdirs[0][:8]+'===\n')
+            out.write('{| class=\"wikitable\"\n')
+            out.write('!colspan=\"10\"|/archive/p/pen/fleaf5/ARO/{}/{}disk'.format(subdirs[0][2:6],drive[-4])+'\n')
+            out.write('|-\n|subdirs||numFiles||size||leni||lenj||notes\n')
+            for k in np.arange(len(subdirs)):
+                out.write('|-\n')
+                out.write('|'+subdirs[k]+'||%d||%s||%d||%d'%(numFiles[k],sizeFiles[k],leni[k],lenj[k]))
+                out.write('||'+notes[k]+'\n')
+            out.write(r'|}')
+        print('docs for wiki saved to ',outname) 
+    return 0
+
+
             
     
 def check_rsync(path,subdirs,leni,lenj,numFilesPreSync,startDir,numDir):
