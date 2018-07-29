@@ -37,9 +37,9 @@ USAGE:
    * **make script**: write submission script for htar
    * **make htar**: submit htar task
 #htar output: htar_submit/HTAR*.OUT
-   * **make htarcheck**: check the file number in HPSS tarballs
+   * **make checkhtar**: check the file number in HPSS tarballs
 #whether there are missing files, see htar_submit/CHECK*.OUT
 
 MORE HELP:
-* make help: will print the help 
+* **make help**: will print the help 
 * python rsync_ARO.py -h (with python3) will print the parameter for the syncing script.
