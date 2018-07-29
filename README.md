@@ -19,23 +19,23 @@ USAGE:
 1. put the folder: file4groundhog in groundhog, change the 'drivename' in check_file_info.py, run it with python3. 
    Copy the output file "$drivename_file_info.dat' back to this folder.
 2. revise the following lines in makefile:
-DISK=A#drive name
-OBS_DATE=1804#observed at 2018.4
-STARTFILE=0
-ENDFILE=9
+*DISK=A#drive name
+*OBS_DATE=1804#observed at 2018.4
+*STARTFILE=0
+*ENDFILE=9
 #archiving folders between $STARTFILE and $ENDFILE(included) in $drivename_file_info.dat
-NIADIR=${SCRATCH}/ARO/${OBS_DATE}/${DISK}disk/
-ARCDIR=${ARCHIVE}/ARO/${OBS_DATE}/${DISK}disk/
+*NIADIR=${SCRATCH}/ARO/${OBS_DATE}/${DISK}disk/
+*ARCDIR=${ARCHIVE}/ARO/${OBS_DATE}/${DISK}disk/
 #path in niagara and archive directory
 
 3. run the following command one by one:
-make sync: for syncing files and create folders in dest directory (will auto run make check recursively)
+*make sync: for syncing files and create folders in dest directory (will auto run make check recursively)
 #output:log_sync
-make checksync: to check if synced file number matches the one before syncing
-make script: write submission script for htar
-make htar: submit htar task
+*make checksync: to check if synced file number matches the one before syncing
+*make script: write submission script for htar
+*make htar: submit htar task
 #htar output: htar_submit/HTAR*.OUT
-make htarcheck: check the file number in HPSS tarballs
+*make htarcheck: check the file number in HPSS tarballs
 #whether there are missing files, see htar_submit/CHECK*.OUT
 
 MORE HELP:
