@@ -21,13 +21,13 @@ rsync alias -s -vrtlD -e "ssh"
    Copy the output file "$drivename_file_info.dat' back to this folder.
    _optional: paste the other output file: drivename`_`wiki`_`doc.dat on wiki for record_
 2. revise the following lines in makefile:
-DISK=A#drive name
-OBS_DATE=1804#observed at 2018.4
-STARTFILE=0
-ENDFILE=-1
+   * DISK=A#drive name
+   * OBS_DATE=1804#observed at 2018.4
+   * STARTFILE=0
+   * ENDFILE=-1
 #archiving folders between $STARTFILE and $ENDFILE(included) in $drivename_file_info.dat, -1 means last folder
-NIADIR=${SCRATCH}/ARO/${OBS_DATE}/${DISK}disk/
-ARCDIR=${ARCHIVE}/ARO/${OBS_DATE}/${DISK}disk/
+   * NIADIR=${SCRATCH}/ARO/${OBS_DATE}/${DISK}disk/
+   * ARCDIR=${ARCHIVE}/ARO/${OBS_DATE}/${DISK}disk/
 #path in niagara and archive directory
 
 3. run the following command one by one:
