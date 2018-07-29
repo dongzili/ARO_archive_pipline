@@ -2,7 +2,7 @@
 import numpy as np
 import os
 import time
-from func_rsync import *
+from func_check import disk_info
 
 drivename='A'
 num_drives=10

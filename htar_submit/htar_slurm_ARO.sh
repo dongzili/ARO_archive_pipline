@@ -6,12 +6,12 @@
 
 trap "echo 'Job script not completed';exit 129" TERM INT
 
-#input variables: DISK,OBS_DATE,SUBDIR,LENI,LENJ
-echo DISK,$DISK,OBS_DATE,$OBS_DATE,SUBDIR,$SUBDIR,LENI,$LENI,LENJ,$LENJ
-NIASCT=/scratch/p/pen/fleaf5
-FOLDER=ARO/$OBS_DATE/$DISK
-SRCDIR=$NIASCT/$FOLDER/$SUBDIR
-DESTDIR=$ARCHIVE/$FOLDER/$SUBDIR
+#input variables: NIADIR,DESDIR,SUBDIR,LENI,LENJ
+SRCDIR=${NIADIR}$SUBDIR
+DESTDIR=$ARCHIVE/${ARCDIR}$SUBDIR
+#dest folder in archive
+echo archieving data from: ${SRCDIR}
+echo archieving data to: $DESTDIR 
 
 #########################
 #check if the target directory exists, if not create one
@@ -66,7 +66,10 @@ for ((i=0;i<${LENI};i++));do
         status=$?
      
         if [ $status == 0 ]; then   
-            echo 'File already exists. Nothing has been done'
+            echo 'File already exists.'
+            FILENUMBER="$(htar -tvf $DESTFILE | grep files | awk '{print $6}')"
+            echo number of files in the tarball: 
+            echo $FILENUMBER
             continue
         fi
      
