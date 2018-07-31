@@ -34,21 +34,21 @@ def rsync_data(dest,src,subdirs,drives,leni,lenj,startDir,numDir):
                     si = "%03d" % i 
                     sj = str(j)
                     print(subdirs[ndir],si,si+sj)
-                    #change base on the number of drives
                     desfolder=dest+subdirs[ndir]+'/'
-                    p0 = subprocess.Popen(['rsync -s '+src+drives[0]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p1 = subprocess.Popen(['rsync -s '+src+drives[1]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p2 = subprocess.Popen(['rsync -s '+src+drives[2]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p3 = subprocess.Popen(['rsync -s '+src+drives[3]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p4 = subprocess.Popen(['rsync -s '+src+drives[4]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    exit_codes = [p.wait() for p in [p0,p1,p2,p3,p4]] 
-                #break it by parts due to network limit
-                    p5 = subprocess.Popen(['rsync -s '+src+drives[5]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p6 = subprocess.Popen(['rsync -s '+src+drives[6]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p7 = subprocess.Popen(['rsync -s '+src+drives[7]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p8 = subprocess.Popen(['rsync -s '+src+drives[8]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    p9 = subprocess.Popen(['rsync -s '+src+drives[9]+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
-                    exit_codes = [p.wait() for p in [p5,p6,p7,p8,p9]] 
+                    ###########################
+                    #rsync processes
+                    processes=[]
+                    for drive in drives[:5]:
+                        p = subprocess.Popen(['rsync -s '+src+drive+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
+                        processes.append(p)
+                    exit_codes = [p.wait() for p in processes] 
+                    #break it by parts due to network limit
+                    processes=[]
+                    for drive in drives[5:]:
+                        p = subprocess.Popen(['rsync -s '+src+drive+subdirs[ndir]+'/'+si+sj+'*.vdif '+desfolder+si+'/'+si+sj+'/'],shell=True)
+                        processes.append(p)
+                    exit_codes = [p.wait() for p in processes] 
+
                     print('exited with exit codes ' + str(exit_codes))
     return 0
         

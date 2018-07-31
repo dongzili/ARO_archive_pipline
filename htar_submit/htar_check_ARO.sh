@@ -50,10 +50,11 @@ for ((i=0;i<${LENI};i++));do
         echo checking $DESTFILE
 
         #the expected file number
-        EXPFILENUM=1001
-        if [ $(($i*10+$l-$FILENUM/1000)) == 0 ]; then 
-        EXPFILENUM=$(($FILENUM-$FILENUM/1000*1000+1))
-        fi
+        EXPFILENUM="$(ls *.vdif | wc -l)"
+        #EXPFILENUM=1001
+        #if [ $(($i*10+$l-$FILENUM/1000)) == 0 ]; then 
+        #EXPFILENUM=$(($FILENUM-$FILENUM/1000*1000+1))
+        #fi
     
         # htar WILL overwrite an existing file with the same name so check beforehand.
  
