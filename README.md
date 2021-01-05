@@ -18,7 +18,7 @@ rsync alias -s -vrtlD -e "ssh"
 
 ### USAGE:
 1. put the folder: file4groundhog in groundhog, change the 'drivename' in check_file_info.py, run it with python3. 
-   Copy the output file "$drivename_file_info.dat' back to this folder.
+   Copy the output file "$drivename_file_info.dat' back to this ARO_archive_pipline fold (same directory with the makefile).
    
    _optional: paste the other output file: drivename`_`wiki`_`doc.dat on wiki for record_
 2. revise the following lines in makefile:
