@@ -32,7 +32,7 @@ rsync alias -s -vrtlD -e "ssh"
 #path in niagara and archive directory
 
 3. run the following command one by one:
-
+   * **module load intelpython3/2018.2**
    * **make sync**(after ssh nia-datamover1 or 2): syncing files and create folders in dest directory (will auto run make check recursively)
 #output:log_sync
    * **make checksync**: to check if synced file number matches the one before syncing
