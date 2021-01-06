@@ -1,6 +1,6 @@
 SHELL:=/bin/bash
-DISK=B#drive name
-OBS_DATE=1707#observed at 2018.4
+DISK=N#drive name
+OBS_DATE=2012#observed at 2018.4
 STARTFILE=0
 ENDFILE=-1
 #archiving folders between $STARTFILE and $ENDFILE(included) in $drivename_file_info.dat
@@ -24,19 +24,19 @@ help:
 #to see help: python rsync_ARO.py -h
 sync:func_sync.py func_check.py rsync_ARO.py
 	#ssh nia-datamover1
-	module load intelpython3/2018.2;\
+	module load intelpython3;\
 	nohup python rsync_ARO.py ${DISK}_file_info.dat -d ${NUMDRIVES} -o ${NIADIR} -s ${STARTFILE} -e ${ENDFILE} --syncNotes --syncData --mkdir > log_sync 2>&1 &
 
 sync2:func_sync.py func_check.py rsync_ARO.py
-	module load intelpython3/2018.2;\
+	module load intelpython3;\
 	nohup python rsync_ARO.py ${DISK}_file_info.dat -d ${NUMDRIVES} -o ${NIADIR} -s ${STARTFILE} -e ${ENDFILE} --syncNotes --syncData > log_sync 2>&1 &
 
 checksync:rsync_ARO.py func_check.py
-	module load intelpython3/2018.2;\
+	module load intelpython3;\
 	python rsync_ARO.py ${DISK}_file_info.dat -o ${NIADIR} -s ${STARTFILE} -e ${ENDFILE} --check
 
 script:write_submit_script.py
-	module load intelpython3/2018.2;\
+	module load intelpython3;\
 	python write_submit_script.py ${DISK}disk ${OBS_DATE} ${STARTFILE} ${ENDFILE} ${NIADIR} ${ARCDIR};\
 	chmod +x htar_submit/submit_*_ARO_${DISK}disk.sh
 

@@ -4,9 +4,10 @@ import os
 import time
 from func_check import *
 
-drivename='A'
+drivename='N'
 num_drives=10
 outpath='/home/dzli/trans/'
+#outpath='./'
 fileInfoName=outpath+drivename+'_file_info.dat'
 wikiDocName=outpath+drivename+'_wiki_doc.dat'
 drives = ['/mnt/{}-{}/'.format(drivename,no) for no in range(0,num_drives)]

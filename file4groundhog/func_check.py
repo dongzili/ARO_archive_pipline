@@ -23,10 +23,20 @@ def disk_info(drives,outname='rsync.par',saveinfo='True'):
                 os.chdir(drive+subdir)
                 numFiles[i]+=len(glob.glob('*.vdif'))
                 sizeFiles[i]+=(sum(os.path.getsize(f) for f in os.listdir('.') if os.path.isfile(f))/1024.**3) #filesize in Gb
+                lastdrive=drive+subdir #in case small folder without filling 10 drives, or one drives corrupted
             except IOError:
                 print('corrupted files or drive:',drive+subdir)
                 
         #to deal with corrupted file:
+        os.chdir(lastdrive)
+        print('folder',lastdrive)
+        #in case of empty folder
+        testNumFile=len(glob.glob('*.vdif'))
+        if testNumFile<1:
+            print('File number in the folder:',testNumFile,'skip')
+            continue
+
+
         roughTotFile=np.sort(glob.glob('*.vdif'))[-1]
         roughTotFile=int(roughTotFile[:-5])
         if roughTotFile<numFiles[i]:
@@ -42,6 +52,8 @@ def disk_info(drives,outname='rsync.par',saveinfo='True'):
         with open(outname, 'w') as out:
             out.write('#subdirs numFiles size\n')
             for k in np.arange(len(subdirs)):
+                if sizeFiles[k]==0: #in case of empty folder
+                    continue
                 out.write(subdirs[k]+' %d %dGb %d %d '%(numFiles[k],sizeFiles[k],leni[k],lenj[k])+'\n')
     print('info saved to ',outname) 
     return subdirs,leni,lenj,sizeFiles
@@ -59,8 +71,12 @@ def write4wiki(drive,diskInfoFile,outname='wiki_doc.dat',saveinfo='True'):
     notes=[]
     for i in np.arange(len(subdirs)):
         notepath=drive+subdirs[i]+'/'+'settings.txt'
-        note=np.genfromtxt(notepath,dtype=str,delimiter='\t')[11][6:-1]
-        print(note)
+        try:
+            note=np.genfromtxt(notepath,dtype=str,delimiter='\t')[11][6:-1]
+            print(note)
+        except OSError:
+            print(notepath,'not found')
+            note=''
         notes.append(note)
             
     #write to current dir
@@ -71,6 +87,8 @@ def write4wiki(drive,diskInfoFile,outname='wiki_doc.dat',saveinfo='True'):
             out.write('!colspan=\"10\"|/archive/p/pen/fleaf5/ARO/{}/{}disk'.format(subdirs[0][2:6],drive[-4])+'\n')
             out.write('|-\n|subdirs||numFiles||size||leni||lenj||notes\n')
             for k in np.arange(len(subdirs)):
+                if sizeFiles[k]==0: #in case of empty folder
+                    continue
                 out.write('|-\n')
                 out.write('|'+subdirs[k]+'||%d||%s||%d||%d'%(numFiles[k],sizeFiles[k],leni[k],lenj[k]))
                 out.write('||'+notes[k]+'\n')
