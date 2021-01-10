@@ -8,7 +8,7 @@ NIADIR=${SCRATCH}/ARO/${OBS_DATE}/${DISK}disk/
 ARCDIR=${ARCHIVE}/ARO/${OBS_DATE}/${DISK}disk/
 #path in niagara and archive directory
 #here the ${ARCHIVE} parameter is empty, it is imported in submit script.
-NUMDRIVES=9
+NUMDRIVES=10
 
 .PHONY: help
 help:
