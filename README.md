@@ -34,6 +34,8 @@ rsync alias -s -vrtlD -e "ssh"
 3. run the following command one by one:
    * **make sync**(after ssh nia-datamover1 or 2): syncing files and create folders in dest directory (will auto run make check recursively)
 #output:log_sync
+   (Note: it will start a nohup process for syncing. If you would like to kill it before it finishes syncing: get the PID: ps -ef | grep "python" and kill it with "kill -9 PID")
+   (Note: without syncing the note, use make sync2)
    * **make checksync**: to check if synced file number matches the one before syncing
    * **make script**: write submission script for htar
    * **make htar**: submit htar task
